@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import FetchAll from '../../components/Fetch/FetchAll';
 import { Link } from 'react-router-dom';
+import Style from './homePage.module.css';
 
 export default class HomePage extends Component {
     state = {
@@ -10,7 +11,7 @@ export default class HomePage extends Component {
 
     componentDidMount() {
         FetchAll().then(res => {
-            console.log(res.data.results);
+            
             this.setState({ films: res.data.results });
        })
     }
@@ -23,7 +24,7 @@ export default class HomePage extends Component {
                    {this.state.films.map(film => {
                        const { id, title, } = film;
                        return(
-                       <li key={id}>
+                       <li className={Style.film_list__item} key={id}>
                             <Link to={`/movies/${id}`}><h2>{title}</h2></Link>
                        </li> )
                    })}

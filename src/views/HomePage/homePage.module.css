@@ -1,0 +1,9 @@
+.film_list__item a {
+  text-decoration: none;
+  list-style: none;
+  color: black;
+}
+
+.film_list__item a:hover {
+  color: red;
+}

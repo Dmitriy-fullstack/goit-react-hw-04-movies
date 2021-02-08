@@ -7,7 +7,7 @@ import FetchByName from '../../components/Fetch/FetchByName';
 export default class MoviesPage extends Component {
     state ={
         films: [],        
-        name: null,
+        name: '',
         status: 'idle'
     }
 

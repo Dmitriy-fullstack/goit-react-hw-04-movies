@@ -33,7 +33,7 @@ export default class Reviews extends Component {
                             </li> 
                     )
                 })}
-                {/* {this.state.reviews.length === 0 ? <span>Nothing found</span> : <span>And Others...</span>}                 */}
+                {this.state.reviews.length === 0 ? <span>You don`t have any reviews for this movie</span> : <span>And Others...</span>}                
             </ul>   
             </>
         )

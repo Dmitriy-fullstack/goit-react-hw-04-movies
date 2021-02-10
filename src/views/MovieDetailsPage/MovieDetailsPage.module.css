@@ -30,4 +30,23 @@
 }
 .production_countries_item {
   text-decoration: none;
+  margin-left: 10px;
+}
+
+.film_data_section {
+  border-bottom: 1px solid gray;
+  box-shadow: 0px 0px 10px 0px grey;
+}
+
+.additional a {
+  text-decoration: none;
+  color: black;
+  list-style: none;
+  font-size: 18px;
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+.additional a:hover {
+  color: red;
 }

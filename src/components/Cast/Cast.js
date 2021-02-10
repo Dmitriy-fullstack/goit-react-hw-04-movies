@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import FetchDetailsCast from '../Fetch/FetchDetailsCast'
+import Style from './cast.module.css';
 
 export default class Cast extends Component {
     state ={
@@ -23,8 +24,8 @@ export default class Cast extends Component {
               <ul>
                 {casts.map(cast => {
                     const { profile_path, id, name } = cast;
-                    return (<li key={id}>
-                                <img src={`https://image.tmdb.org/t/p/original/${profile_path}`} alt="profile" />
+                    return (<li className={Style.cast_item} key={id}>
+                                <img className={Style.cast_img} src={`https://image.tmdb.org/t/p/original/${profile_path}`} alt="profile" />
                                 <p>{name}</p>
                             </li> 
                     )

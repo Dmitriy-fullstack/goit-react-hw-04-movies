@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import SearchForm from '../../components/SearchForm/SearchForm';
 import FetchByName from '../../components/Fetch/FetchByName';
+import Style from './moviesPage.module.css';
 
 export default class MoviesPage extends Component {
     state ={
@@ -33,11 +34,10 @@ export default class MoviesPage extends Component {
                    <ul>
 
                        {films.map(film => {
-                           const {id, popularity, title, poster_path} = film;
+                           const {id, popularity, title} = film;
                             return (
                                 <li key={id}>
                                     <Link to={`/movies/${id}`}>                                
-                                        <img src={`https://image.tmdb.org/t/p/original/${poster_path}`} alt="poster" />
                                         <h2>{title}</h2>
                                         <p>Rating: {popularity}</p>
                                     </Link>

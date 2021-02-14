@@ -4,12 +4,12 @@ import swal from 'sweetalert';
 
 export default class SearchForm extends Component {
     state ={
-        value: ''
+        name: ''
     }
 
     onSubmit = (event) => {
             event.preventDefault();
-            if(this.state.value.trim === '') {
+            if(this.state.name.trim === '') {
                 swal({
                     title: "error",
                     text: "Write your query",
@@ -18,11 +18,11 @@ export default class SearchForm extends Component {
                 return
             }
 
-        this.props.onSubmit(this.state.value);
+        this.props.onSubmit(this.state.name);
     }
 
     handleInput = Event => {
-        this.setState({value:Event.target.value.toLowerCase()})
+        this.setState({name:Event.target.value.toLowerCase()})
     }
 
     render() {

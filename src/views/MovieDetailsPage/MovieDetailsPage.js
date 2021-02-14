@@ -1,88 +1,70 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import Cast from '../../components/Cast/Cast'
-import Reviews from '../../components/Reviews/Reviews'
-import FetchMovieDetails from '../../components/Fetch/FetchMovieDetails'
-import {Route, Link} from "react-router-dom";
-import { v4 as uuidv4 } from 'uuid';
-import Style from './MovieDetailsPage.module.css';
+import React, { Component, lazy } from "react";
+import PropTypes from "prop-types";
+import { FetchMovieDetails } from "../../Services/fetch";
+import { Route, Link } from "react-router-dom";
+import MovieInfo from "../../components/MovieInfo/MovieInfo";
+import Cast from "../Cast/Cast";
+import Reviews from "../Reviews/Reviews";
+import GoBack from "../../components/GoBack/GoBack";
 
 export default class MovieDetailsPage extends Component {
-    
-    state = {
-        film: {},
+  state = {
+    film: {},
+  };
+
+  componentDidMount() {
+    FetchMovieDetails(this.props.match.params.movieId).then((res) => {
+      this.setState({ film: res.data });
+    });
+  }
+
+  handleBack = () => {
+    const { location, history } = this.props;
+    console.log(location);
+
+    if (location.state && location.state.from) {
+      return history.push(location.state.from);
     }
+    history.push("/");
+  };
 
-    componentDidMount() {
-        FetchMovieDetails(this.props.match.params.movieId).then(res => {
-            console.log(res.data);
-            this.setState({ film: res.data });
-        })
-    }
+  render() {
+    const { location, match } = this.props;
 
-    render() {
+    return (
+      <>
+        <GoBack handleBack={this.handleBack} />
+        <MovieInfo film={this.state.film}></MovieInfo>
+        <Link
+          to={{
+            pathname: `${match.url}/cast`,
+            state: {
+              from: location?.state?.from || "/",
+            },
+          }}
+        >
+          Cast
+        </Link>
+        <Link
+          to={{
+            pathname: `${match.url}/reviews`,
+            state: {
+              from: location?.state?.from || "/",
+            },
+          }}
+        >
+          Reviews
+        </Link>
 
-        const { budget, genres, title, vote_average, vote_count, production_countries, production_companies, poster_path, overview } = this.state.film;
-
-        return (
-            <>
-                <div className={Style.container}>
-                    <div><img src={`https://image.tmdb.org/t/p/original/${poster_path}`} alt="poster" /></div>
-                    <div className={Style.film_data_section}>
-                        <button type ="button" onClick={() => this.props.history.push('/movies')}>Go back</button>
-                        <h1>{title}</h1>
-                        <h2 className={Style.film_data}><span className={Style.film_data_titles}>Overview:</span> {overview}</h2>
-                        <p className={Style.film_data}><span className={Style.film_data_titles}>Budget:</span> {budget}</p>
-                        <p className={Style.film_data}><span className={Style.film_data_titles}>Votes:</span> {vote_count}</p>
-                        <p className={Style.film_data}><span className={Style.film_data_titles}>Vote average:</span> {vote_average}</p>
-                        
-                        <ul className ={Style.product_info}> <span className={Style.film_data_titles}>Genres:</span>
-                            {genres !== undefined && genres.map(item => {
-                                const { id, name } = item;
-                                return (
-                                    <li className={Style.genres_item} key={id}>
-                                        {name}
-                                    </li>
-                                )
-                            })}
-                        </ul> 
-                        <ul className={Style.product_info}> <span className={Style.film_data_titles}>Production countries:</span>
-                            {production_countries !== undefined && production_countries.map(item => {                        
-                                const { name } = item;
-                                return (
-                                    <li className={Style.production_countries_item} key={uuidv4()}>
-                                        {name}
-                                    </li>
-                                )
-                            })}
-                        
-                        </ul>
-                        <ul className={Style.product_info}> <span className={Style.film_data_titles}>Production companies:</span>
-                            {production_companies !== undefined && production_companies.map(item => {                        
-                                const { name } = item;
-                                return (
-                                    <li className={Style.production_countries_item} key={uuidv4()}>
-                                        {name}
-                                    </li>
-                                )
-                            })}
-                        </ul> 
-                    </div>
-                </div>
-
-                <div className={Style.additional}>
-                    <h3 className={Style.film_data_titles}>Additional information:</h3>
-                    <Link to={`${this.props.match.url}/credits`}>Cast</Link>
-                    <Link to={`${this.props.match.url}/reviews`}>Reviews</Link>
-                    <Route exact path={`${this.props.match.url}/reviews`} component={Reviews}/>
-                    <Route exact path={`${this.props.match.url}/credits`} component={Cast}/>
-                    
-                </div>
-
-
-            </>
-        )
-    }
+        <Route
+          path={`${this.props.match.path}/cast`}
+          render={(props) => <Cast id={this.props.match.params.movieId} />}
+        />
+        <Route
+          path={`${this.props.match.path}/reviews`}
+          render={(props) => <Reviews id={this.props.match.params.movieId} />}
+        />
+      </>
+    );
+  }
 }
-
-

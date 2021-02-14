@@ -1,40 +1,32 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types';
-import FetchAll from '../../components/Fetch/FetchAll';
-import { Link } from 'react-router-dom';
-import Style from './homePage.module.css';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { FetchAll } from "../../Services/fetch";
+import Style from "./homePage.module.css";
+import MoviesListItems from "../../components/MovieListItems/MovieListItems";
 
 export default class HomePage extends Component {
-    state = {
-        films: []
-    }
+  state = {
+    films: [],
+  };
 
-    componentDidMount() {
-        FetchAll().then(res => {
-            
-            this.setState({ films: res.data.results });
-       })
-    }
+  componentDidMount() {
+    FetchAll().then((res) => {
+      this.setState({ films: res.data.results });
+    });
+  }
 
-    render() {
-        return (
-            <>
-               <h1>Trending today:</h1> 
-               <ul>
-                   {this.state.films.map(film => {
-                       const { id, title, } = film;
-                       return(
-                       <li className={Style.film_list__item} key={id}>
-                            <Link to={`/movies/${id}`}><h2>{title}</h2></Link>
-                       </li> )
-                   })}
-               </ul>
-            </>
-        )
-    }
+  render() {
+    return (
+      <>
+        <MoviesListItems
+          location={this.props.location}
+          films={this.state.films}
+        />
+      </>
+    );
+  }
 }
-
 
 HomePage.propTypes = {
-    films: PropTypes.array,
-}
+  films: PropTypes.array,
+};
